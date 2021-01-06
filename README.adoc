@@ -19,6 +19,50 @@ cargo build --release
 == Run
 
 ```
-./target/release/sparql
+./target/release/sparql <params>
 ```
 
+or:
+
+```
+cargo run --- <params>
+```
+
+If no <params> are supplied you will see the following help:
+
+```
+sparql 0.1.0
+a CLI for executing SPARQL statements
+
+This SPARQL CLI is based on Actix-web, it sends a given SPARQL statement that you provide in a file to a given SPARQL
+endpoint and returns the result in either JSON or CSV format.
+
+USAGE:
+    sparql [FLAGS] [OPTIONS] <path> --endpoint <endpoint> <--json|--csv> <SUBCOMMAND>
+
+FLAGS:
+        --csv        CSV output
+    -d, --debug      Activate debug mode
+    -h, --help       Prints help information
+        --json       JSON output
+    -V, --version    Prints version information
+    -v, --verbose    Activate verbose mode
+
+OPTIONS:
+    -e, --endpoint <endpoint>    The SPARQL endpoint URL [env: EKG_SPARQL_ENDPOINT=https://dbpedia.org/sparql]
+    -t, --timeout <timeout>      The timeout in milliseconds to use for the SPARQL statement [default: 1000]
+
+ARGS:
+    <path>    path of the SPARQL file to execute
+
+SUBCOMMANDS:
+    help    Prints this message or the help of the given subcommand(s)
+    info    TODO: Pretty print SPARQL
+    run     Run a SPARQL statement
+```
+
+### Get some soccer players from DbPedia
+
+```
+cargo r -- --timeout 1000 --csv --endpoint https://dbpedia.org/sparql ./sparql-statements/select-dbpedia-soccer-players.sparql run
+```
