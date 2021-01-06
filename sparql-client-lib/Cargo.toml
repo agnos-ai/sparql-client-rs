@@ -1,5 +1,5 @@
 [package]
-name = "sparql-client-rs"
+name = "sparql-client-lib"
 description = "Simple SPARQL client based on Actix-web"
 version = "0.1.0"
 authors = [
@@ -14,7 +14,7 @@ categories = ["api-bindings", "database"]
 edition = "2018"
 
 [lib]
-name = "sparql_client_rs"
+name = "sparql_client_lib"
 path = "src/lib.rs"
 
 [dependencies]

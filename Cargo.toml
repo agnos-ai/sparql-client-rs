@@ -1,6 +1,6 @@
 
 [workspace]
 members = [
-    "sparql-client-rs",
-    "sparql" # <- the name of the binary
+    "sparql-client-lib",
+    "sparql-client-bin"
 ]

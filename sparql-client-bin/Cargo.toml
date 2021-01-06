@@ -1,5 +1,5 @@
 [package]
-name = "sparql"
+name = "sparql-client-bin"
 description = "Simple CLI that executes a SPARQL statement against a given endpoint"
 version = "0.1.0"
 authors = [
@@ -18,7 +18,7 @@ name = "sparql"
 path = "src/bin.rs"
 
 [dependencies]
-sparql-client-rs = { path = "../sparql-client-lib" }
+sparql-client-lib = { path = "../sparql-client-lib" }
 mime = "0.3.16"
 actix-web = { version = "3.3.2", features = ["openssl"] }
 serde_json = "1.0.61"

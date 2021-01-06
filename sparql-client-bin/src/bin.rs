@@ -3,9 +3,9 @@ use std::process::exit;
 
 use structopt::StructOpt;
 
-use sparql_client_rs::*;
-use sparql_client_rs::cli_model::output_mime;
-use sparql_client_rs::json::SparqlResultObject;
+use sparql_client_lib::*;
+use sparql_client_lib::cli_model::output_mime;
+use sparql_client_lib::json::SparqlResultObject;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {

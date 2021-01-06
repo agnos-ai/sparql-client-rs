@@ -6,7 +6,7 @@ use mime::{TEXT_CSV, APPLICATION_JSON, Mime};
 #[derive(StructOpt, Debug)]
 #[structopt(setting = structopt::clap::AppSettings::ColoredHelp)]
 #[structopt(rename_all = "kebab-case")]
-#[structopt(about = "a CLI for executing SPARQL statements")]
+#[structopt(name = "sparql", about = "a CLI for executing SPARQL statements")]
 /// a CLI for executing SPARQL statements
 ///
 /// This SPARQL CLI is based on Actix-web, it sends a given SPARQL statement that you
