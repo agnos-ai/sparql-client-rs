@@ -49,7 +49,7 @@ pub fn sparql_get(client: Client, host: &str, accept: Mime, query: &str) -> Clie
 
     client
         .get(host.clone())
-        .header("User-Agent", "agnos-ai/sparql-client")
+        .header("User-Agent", "agnos-ai/sparql-client-rs")
         .header(header::ACCEPT, accept)
         .query(&params)
         .unwrap()

@@ -9,3 +9,9 @@ This Rust crate is just a hobby project. Do not use (yet?).
 == Contributing
 
 Want to help out? Just create an issue or pull request.
+
+== Build
+
+```
+cargo build
+```

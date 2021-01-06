@@ -1,0 +1,23 @@
+[package]
+name = "sparql"
+description = "Simple CLI that executes a SPARQL statement against a given endpoint"
+version = "0.1.0"
+authors = [
+    "Jacobus Geluk <jacobus.geluk@agnos.ai>"
+]
+license = "MIT"
+readme = "../README.adoc"
+repository = "https://github.com/agnos-ai/sparql-client-rs"
+homepage = "https://github.com/agnos-ai/sparql-client-rs"
+keywords = ["sparql", "database", "rdf", "cli"]
+categories = ["api-bindings", "database"]
+edition = "2018"
+
+[[bin]]
+name = "sparql"
+path = "src/bin.rs"
+
+[dependencies]
+sparql-client-rs = { path = "../sparql-client-rs" }
+mime = "0.3.16"
+actix-web = { version = "3.3.2", features = ["openssl"] }
