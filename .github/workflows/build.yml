@@ -41,7 +41,11 @@ jobs:
   build_rest:
     strategy:
       matrix:
-        os: [windows-latest, macos-latest, ubuntu-latest]
+#        Disabling windows for now due to openssl build issues
+#        See https://github.com/sfackler/rust-openssl/issues/1086
+#        Need to fix that later
+#        os: [windows-latest, macos-latest, ubuntu-latest]
+        os: [macos-latest, ubuntu-latest]
         include:
           - os: windows-latest
             exetarget: windows
@@ -71,6 +75,9 @@ jobs:
           target: ${{ matrix.target }}
           override: true
           default: true
+
+      - name: Restore Cargo Cache
+        uses: Swatinem/rust-cache@v1
 
       - name: Run cargo check
         uses: actions-rs/cargo@v1
