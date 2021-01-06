@@ -48,10 +48,12 @@ async fn main() -> std::io::Result<()> {
     }
 
     if args.output_mime.csv {
+        // TODO: Get this to stream rather than copying it all into memory
         let bytes = response.body().await.unwrap();
         let csv_string = std::str::from_utf8(&bytes).unwrap();
         println!{"{}", csv_string};
     } else {
+        // TODO: Get this to stream rather than copying it all into memory
         let result = response.json::<SparqlResultObject>();
 
         for value in result.await {

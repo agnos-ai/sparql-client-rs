@@ -1,0 +1,130 @@
+name: Rust
+
+on:
+  push:
+  pull_request:
+  release:
+    types:
+      - created
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+
+  #  build_musl:
+  #    runs-on: ubuntu-latest
+  #    steps:
+  #      - uses: actions/checkout@v2
+  #      - uses: actions-rs/toolchain@v1
+  #        with:
+  #          toolchain: stable
+  #          override: true
+  #          target: x86_64-unknown-linux-musl
+  #          default: true
+  #      - name: Build
+  #        uses: actions-rs/cargo@v1.0.3
+  #        with:
+  #          command: build
+  #          args: --release --target=x86_64-unknown-linux-musl
+  #      - name: Upload nirvana-cli-musl to release
+  #        uses: svenstaro/upload-release-action@v2
+  #        if: github.event_name == 'release'
+  #        with:
+  #          repo_token: ${{ secrets.GITHUB_TOKEN }}
+  #          file: target/x86_64-unknown-linux-musl/release/nirvana-cli
+  #          asset_name: nirvana-cli-musl
+  #          tag: ${{ github.ref }}
+  #          overwrite: true
+  #          body: "This binary can be used in Alpine or other musl compatible flavors of Linux"
+
+  build_rest:
+    strategy:
+      matrix:
+        os: [windows-latest, macos-latest, ubuntu-latest]
+        include:
+          - os: windows-latest
+            exetarget: windows
+            target: x86_64-pc-windows-msvc
+            targetexe: sparql.exe
+          - os: macos-latest
+            exetarget: macosx
+            target: x86_64-apple-darwin
+            targetexe: sparql
+          - os: ubuntu-latest
+            exetarget: linux-gnu
+            target: x86_64-unknown-linux-gnu
+            targetexe: sparql
+          - os: ubuntu-latest
+            exetarget: linux-musl
+            target: x86_64-unknown-linux-musl
+            targetexe: sparql
+    runs-on: ${{ matrix.os }}
+    steps:
+      - name: Checkout sources
+        uses: actions/checkout@v2
+
+      - name: Install stable toolchain
+        uses: actions-rs/toolchain@v1
+        with:
+          toolchain: stable
+          target: ${{ matrix.target }}
+          override: true
+          default: true
+
+      - name: Run cargo check
+        uses: actions-rs/cargo@v1
+        with:
+          command: check
+
+      - name: Run cargo test
+        uses: actions-rs/cargo@v1
+        with:
+          command: test
+
+      - name: Release build
+        uses: actions-rs/cargo@v1
+        with:
+          command: build
+          args: --release
+
+      - name: Show github ref
+        run: echo github.ref=${{ github.ref }}
+        shell: bash
+
+      - name: Get tag version
+        id: get_version
+        run: |
+          if [[ "${GITHUB_REF}" =~ ^refs/heads/(.*)$ ]] ; then
+            branch="${BASH_REMATCH[1]}"
+          elif [[ "${GITHUB_REF}" =~ ^refs/tags/(.*)$ ]] ; then
+            tag="${BASH_REMATCH[1]}"
+          fi
+          echo ::set-output name=tag::${tag}
+          echo ::set-output name=branch::${branch}
+        shell: bash
+
+      - name: Pack binaries if unix
+        if: matrix.config.os != 'windows-latest' && steps.get_version.outputs.tag != ''
+        run: |
+          tar \
+            -C ./target/${{ matrix.target }}/release \
+            -czvf sparql-${{ steps.get_version.outputs.tag }}-${{ matrix.exetarget  }}.tar.gz \
+            sparql
+      - name: Pack binaries if windows
+        if: matrix.config.os == 'windows-latest' && steps.get_version.outputs.tag != ''
+        run: |
+          compress-archive \
+            target\${{ matrix.target }}\release\sparql.exe \
+            sparql-${{ steps.get_version.outputs.tag }}-${{ matrix.exetarget  }}.zip
+      # https://github.com/svenstaro/upload-release-action/tree/v2
+      - name: Upload to release
+        uses: svenstaro/upload-release-action@v2
+        if: steps.get_version.outputs.tag != ''
+        with:
+          repo_token: ${{ secrets.GITHUB_TOKEN }}
+          file: sparql-${{ steps.get_version.outputs.tag }}-${{ matrix.config.target }}.*
+          tag: ${{ steps.get_version.outputs.tag }}
+          file_glob: true
+          overwrite: true
+          body: "sparql version ${{ steps.get_version.outputs.tag }} for ${{ matrix.exetarget }}"
