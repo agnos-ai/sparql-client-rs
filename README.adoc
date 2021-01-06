@@ -13,5 +13,12 @@ Want to help out? Just create an issue or pull request.
 == Build
 
 ```
-cargo build
+cargo build --release
 ```
+
+== Run
+
+```
+./target/release/sparql
+```
+

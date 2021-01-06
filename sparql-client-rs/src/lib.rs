@@ -15,18 +15,21 @@ use actix_web::client::Connector;
 use std::time::Duration;
 use openssl::ssl::{SslConnector, SslMethod};
 use mime::Mime;
-use actix_web::http::header;
+use actix_web::http::{header, Uri};
 use serde::Serialize;
 
+/// Default timeout for sparql_client()
+pub const TIMEOUT: u64 = 1000;
+
 /// Return a actix_web::client::Client that's configured for a SPARQL query
-pub fn sparql_client() -> Client {
+pub fn sparql_client(timeout: u64) -> Client {
 
     let builder = SslConnector::builder(SslMethod::tls()).unwrap();
 
     Client::builder()
         .connector(
             Connector::new()
-                .timeout(Duration::from_millis(1000))
+                .timeout(Duration::from_millis(timeout))
                 .ssl(builder.build())
                 .finish(),
         )
@@ -41,7 +44,7 @@ pub struct GetRequestParams {
 }
 
 /// Set up a ClientRequest to perform a SPARQL query
-pub fn sparql_get(client: Client, host: &str, accept: Mime, query: &str) -> ClientRequest {
+pub fn sparql_get(client: Client, host: Uri, accept: Mime, query: &str) -> ClientRequest {
 
     let params = GetRequestParams {
         query: (&query).parse().unwrap()

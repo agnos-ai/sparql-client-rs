@@ -1,0 +1,5 @@
+SELECT * WHERE {
+    ?athlete a dbo:SoccerPlayer;
+    dbo:birthPlace [rdfs:label "Funchal"@en; dbo:state dbr:Madeira];
+    dbo:number ?number.
+} LIMIT 20

@@ -1,4 +1,4 @@
-extern crate sparql_client;
+extern crate sparql_client_rs;
 
 use std::time::Duration;
 
@@ -6,8 +6,10 @@ use actix_web::client::Client;
 use actix_web::client::Connector;
 use mime::{APPLICATION_JSON, TEXT_CSV};
 
-use sparql_client::json::SparqlResultObject;
-use sparql_client::query_template::{select_all_triples_limit_8, select_soccer_players};
+use sparql_client_rs::json::SparqlResultObject;
+use sparql_client_rs::query_template::{select_all_triples_limit_8, select_soccer_players};
+use actix_web::http::Uri;
+use sparql_client_rs::TIMEOUT;
 
 mod common;
 
@@ -36,7 +38,7 @@ async fn test_standard_actix_web_example2() {
     let client = Client::builder()
         .connector(
             Connector::new()
-                .timeout(Duration::from_millis(300))
+                .timeout(Duration::from_millis(TIMEOUT))
                 .finish(),
         )
         .finish();
@@ -56,7 +58,7 @@ async fn test_dbpedia_get_root() {
 
     common::setup();
 
-    let client = sparql_client::sparql_client();
+    let client = sparql_client_rs::sparql_client(TIMEOUT);
 
     let host = "https://dbpedia.org/sparql";
 
@@ -75,9 +77,9 @@ async fn test_dbpedia_sparql_query_as_csv() {
 
     common::setup();
 
-    let request = sparql_client::sparql_get(
-        sparql_client::sparql_client(),
-        "https://dbpedia.org/sparql",
+    let request = sparql_client_rs::sparql_get(
+        sparql_client_rs::sparql_client(TIMEOUT),
+        "https://dbpedia.org/sparql".parse::<Uri>().unwrap(),
         TEXT_CSV,
         select_all_triples_limit_8()
     ).send();
@@ -100,9 +102,9 @@ async fn test_dbpedia_sparql_query_as_json_body() {
 
     common::setup();
 
-    let request = sparql_client::sparql_get(
-        sparql_client::sparql_client(),
-        "https://dbpedia.org/sparql",
+    let request = sparql_client_rs::sparql_get(
+        sparql_client_rs::sparql_client(TIMEOUT),
+        "https://dbpedia.org/sparql".parse::<Uri>().unwrap(),
         APPLICATION_JSON,
         select_soccer_players()
     ).send();
@@ -126,9 +128,9 @@ async fn test_dbpedia_sparql_query_as_json_stream1() {
 
     common::setup();
 
-    let request = sparql_client::sparql_get(
-        sparql_client::sparql_client(),
-        "https://dbpedia.org/sparql",
+    let request = sparql_client_rs::sparql_get(
+        sparql_client_rs::sparql_client(TIMEOUT),
+        "https://dbpedia.org/sparql".parse::<Uri>().unwrap(),
         APPLICATION_JSON,
         select_all_triples_limit_8()
     ).send();
@@ -154,9 +156,9 @@ async fn test_dbpedia_sparql_query_as_json_stream2() {
 
     common::setup();
 
-    let request = sparql_client::sparql_get(
-        sparql_client::sparql_client(),
-        "https://dbpedia.org/sparql",
+    let request = sparql_client_rs::sparql_get(
+        sparql_client_rs::sparql_client(TIMEOUT),
+        "https://dbpedia.org/sparql".parse::<Uri>().unwrap(),
         APPLICATION_JSON,
         select_soccer_players()
     ).send();
