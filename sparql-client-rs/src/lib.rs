@@ -4,19 +4,21 @@
 trivial_numeric_casts, unused_import_braces, unused_qualifications
 )]
 
+use std::time::Duration;
+
+use actix_web::client::{Client, ClientRequest};
+use actix_web::client::Connector;
+use actix_web::http::{header, Uri};
+use mime::Mime;
+use openssl::ssl::{SslConnector, SslMethod};
+use serde::Serialize;
+
 /// TODO: Documentation for json module
 pub mod json;
 /// Some example SPARQL queries
 pub mod query_template;
-
-use actix_web::client::{Client, ClientRequest};
-use actix_web::client::Connector;
-
-use std::time::Duration;
-use openssl::ssl::{SslConnector, SslMethod};
-use mime::Mime;
-use actix_web::http::{header, Uri};
-use serde::Serialize;
+/// Structs for StructOpt-based SPARQL CLI
+pub mod cli_model;
 
 /// Default timeout for sparql_client()
 pub const TIMEOUT: u64 = 1000;

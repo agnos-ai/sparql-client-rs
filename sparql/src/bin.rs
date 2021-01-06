@@ -1,11 +1,11 @@
-mod cli_model;
+use std::fs;
+use std::process::exit;
 
 use structopt::StructOpt;
+
 use sparql_client_rs::*;
+use sparql_client_rs::cli_model::output_mime;
 use sparql_client_rs::json::SparqlResultObject;
-use std::process::exit;
-use std::fs;
-use crate::cli_model::output_mime;
 
 #[actix_web::main]
 async fn main() -> std::io::Result<()> {

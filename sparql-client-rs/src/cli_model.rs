@@ -7,6 +7,11 @@ use mime::{TEXT_CSV, APPLICATION_JSON, Mime};
 #[structopt(setting = structopt::clap::AppSettings::ColoredHelp)]
 #[structopt(rename_all = "kebab-case")]
 #[structopt(about = "a CLI for executing SPARQL statements")]
+/// a CLI for executing SPARQL statements
+///
+/// This SPARQL CLI is based on Actix-web, it sends a given SPARQL statement that you
+/// provide in a file to a given SPARQL endpoint and returns the result in either JSON or CSV
+/// format.
 pub struct Cli {
     /// Activate debug mode
     #[structopt(short, long)]
@@ -32,11 +37,13 @@ pub struct Cli {
     #[structopt(flatten)]
     pub output_mime: OutputMime,
 
+    /// The command to be executed
     #[structopt(subcommand)]
     pub cmd: Command
 }
 
-#[derive(StructOpt, Debug)]
+/// The commands
+#[derive(StructOpt, Debug, Copy, Clone)]
 pub enum Command {
     /// Run a SPARQL statement
     Run,
@@ -44,7 +51,8 @@ pub enum Command {
     Info
 }
 
-#[derive(StructOpt, Debug)]
+/// The supported MIME types for the SPARQL results
+#[derive(StructOpt, Debug, Copy, Clone)]
 #[structopt(group = ArgGroup::with_name("output_mime").required(true))]
 pub struct OutputMime {
     /// JSON output
@@ -55,7 +63,8 @@ pub struct OutputMime {
     pub csv: bool
 }
 
-pub(crate) fn output_mime(args: &Cli) -> Mime {
+/// Get the `Mime` type for the SPARQL results i.e. the output
+pub fn output_mime(args: &Cli) -> Mime {
     match args.output_mime {
         OutputMime { csv: true, .. } => TEXT_CSV,
         OutputMime { json: true, .. } => APPLICATION_JSON,
