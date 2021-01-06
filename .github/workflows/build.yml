@@ -38,7 +38,7 @@ jobs:
   #          overwrite: true
   #          body: "This binary can be used in Alpine or other musl compatible flavors of Linux"
 
-  build_rest:
+  build:
     strategy:
       matrix:
 #        Disabling windows for now due to openssl build issues
@@ -47,10 +47,10 @@ jobs:
 #        os: [windows-latest, macos-latest, ubuntu-latest]
         os: [macos-latest, ubuntu-latest]
         include:
-          - os: windows-latest
-            exetarget: windows
-            target: x86_64-pc-windows-msvc
-            targetexe: sparql.exe
+#          - os: windows-latest
+#            exetarget: windows
+#            target: x86_64-pc-windows-msvc
+#            targetexe: sparql.exe
           - os: macos-latest
             exetarget: macosx
             target: x86_64-apple-darwin
