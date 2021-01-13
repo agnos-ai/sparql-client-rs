@@ -56,13 +56,15 @@ ARGS:
     <path>    path of the SPARQL file to execute
 
 SUBCOMMANDS:
-    help    Prints this message or the help of the given subcommand(s)
-    info    TODO: Pretty print SPARQL
-    run     Run a SPARQL statement
+    help      Prints this message or the help of the given subcommand(s)
+    info      TODO: Pretty print SPARQL
+    query     Run a SPARQL query
+    update    TODO: Run a SPARQL update
+    graph     TODO: Execute a Graph Store HTTP Protocol request
 ```
 
 ### Get some soccer players from DbPedia
 
 ```
-cargo r -- --timeout 1000 --csv --endpoint https://dbpedia.org/sparql ./sparql-statements/select-dbpedia-soccer-players.sparql run
+cargo r -- --timeout 1000 --csv --endpoint https://dbpedia.org/sparql ./sparql-statements/select-dbpedia-soccer-players.sparql query
 ```
