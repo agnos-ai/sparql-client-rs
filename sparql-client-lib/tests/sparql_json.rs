@@ -1,3 +1,4 @@
+extern crate sparql_client_lib;
 
 #[test]
 fn test_sparql_json1() {
@@ -33,7 +34,7 @@ fn test_sparql_json1() {
 
     println!("JSON {:?}", j);
 
-    let deserialized: sparql_client::json::SparqlResultObject = serde_json::from_str(&j).unwrap();
+    let deserialized: sparql_client_lib::json::SparqlResultObject = serde_json::from_str(&j).unwrap();
 
     println!("deserialized = {:#?}", deserialized);
 }
@@ -85,7 +86,7 @@ fn test_sparql_json2() {
 
     println!("JSON {:?}", j);
 
-    let deserialized: sparql_client::json::SparqlResultObject = serde_json::from_str(&j).unwrap();
+    let deserialized: sparql_client_lib::json::SparqlResultObject = serde_json::from_str(&j).unwrap();
 
     println!("deserialized = {:#?}", deserialized);
 }

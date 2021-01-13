@@ -7,7 +7,7 @@ use mime::{TEXT_CSV, APPLICATION_JSON, Mime};
 #[structopt(setting = structopt::clap::AppSettings::ColoredHelp)]
 #[structopt(rename_all = "kebab-case")]
 #[structopt(name = "sparql", about = "a CLI for executing SPARQL statements")]
-/// a CLI for executing SPARQL statements
+/// CLI for executing SPARQL statements
 ///
 /// This SPARQL CLI is based on Actix-web, it sends a given SPARQL statement that you
 /// provide in a file to a given SPARQL endpoint and returns the result in either JSON or CSV
@@ -45,8 +45,12 @@ pub struct Cli {
 /// The commands
 #[derive(StructOpt, Debug, Copy, Clone)]
 pub enum Command {
-    /// Run a SPARQL statement
-    Run,
+    /// Run a SPARQL query
+    Query,
+    /// TODO: Run a SPARQL update
+    Update,
+    /// TODO: Execute a Graph Store HTTP Protocol request
+    Graph,
     /// TODO: Pretty print SPARQL
     Info
 }
