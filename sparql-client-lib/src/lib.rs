@@ -53,7 +53,7 @@ pub fn sparql_get(client: Client, host: Uri, accept: Mime, query: &str) -> Clien
     };
 
     client
-        .get(host.clone())
+        .get(host)
         .header("User-Agent", "agnos-ai/sparql-client-rs")
         .header(header::ACCEPT, accept)
         .query(&params)
